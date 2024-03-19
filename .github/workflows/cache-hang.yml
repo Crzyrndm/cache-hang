@@ -1,0 +1,25 @@
+name: "Cache hang demo"
+on:
+    [pull_request]
+  
+  
+jobs:
+  cache-hang:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: firmware
+          max-size: 500M # default is 500M, each build currently produces ~400MB
+
+      - name: Install GNU Arm Embedded Toolchain (arm-none-eabi-gcc)
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: "10.3-2021.10"
+
+      - uses: lukka/get-cmake@latest
+
+      - uses: seanmiddleditch/gha-setup-ninja@master
